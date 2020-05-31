@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Главная страница</title>
+     {% load static %}
+    <link rel="stylesheet"  href="{% static 'weather_app/css/bootstrap.css' %}" type="text/css">
+</head>
+<body>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Ярослав</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="#">Информация</a>
+        <a class="p-2 text-dark" href="#">Главное</a>
+
+      </nav>
+  <a class="btn btn-outline-primary" href="#">Документация</a>
+    </div>
+    <div class="container">
+        <h1>Погода в городе</h1>
+        <div class="row">
+            <div class="col-5 offset-1">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <label for="city"></label>
+                    {{ form.name }}
+                    <input type="submit"  class="mt-2 btn btn-danger" value="Ввести" name="send" >
+
+                    {% if message %}
+
+                    <div class="container">
+
+                        <div class="notification {{ message_class }}">{{ message }}
+
+                        </div>
+                    </div>
+                        {% endif %}
+                </form>
+            </div>
+            <div class="col-4 offset-2">
+                <h1>Информация о погоде сегодня</h1>
+
+                {% for info in all_info %}
+
+                <div class="alert alert-light">
+                     <div class="media">
+                        <a href="{% url 'delete_city' info.city %}">
+                            <button type="button" class="btn btn-outline-danger">&#10060;</button>
+                        </a>
+                    </div>
+                    <b>Город:</b> {{ info.city }}
+                    <br>
+                    <b>Температура:</b> {{ info.temp }}<b>&#8451</b><br>
+                    <b>Информация:</b> {{ info.description }}<br>
+                    <img src="http://openweathermap.org/img/w/{{ info.icon }}.png" alt="Фото погоды"
+                                  class="img-thumbnail">
+
+
+                </div>
+                 {% endfor %}
+            </div>
+
+        </div>
+    </div>
+
+ <div class="container">
+    <hr>
+    &copy; Все права защищены 2020
+  </div>
+</body>
+</html>
